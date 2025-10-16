@@ -1,0 +1,93 @@
+﻿@model IEnumerable<Booking.Models.Reservation>
+
+@{
+    ViewBag.Title = "Index";
+}
+<div class="proba" style="padding: 40px; border-radius: 30px">
+    <h2>Резервации</h2>
+    <table class="table" id="tabela">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Room.ImageURL)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Room.Number)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Surname)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateOfReservation)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EndOfReservation)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TotalPrice)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <img src="@item.Room.ImageURL" style="width: 300px" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Room.Number)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Surname)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateOfReservation)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndOfReservation)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalPrice)
+                    </td>
+                    <td>
+                        <button kopce=@item.Id class="btn btn-danger js-delete">Избриши</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var tabelata = $("#tabela").DataTable();
+            $("#tabela .js-delete").on("click", function () {
+                var kopceto = $(this);
+                bootbox.confirm("Дали сакате да ја избришете оваа резервација?", function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: "/Reservations/Delete/" + kopceto.attr("kopce"),
+                            method: "GET",
+                            success: function () {
+                                tabelata.row(kopceto.parents("tr")).remove().draw();
+
+                            },
+                            error: function (err) {
+                                console.log(err)
+                            }
+                        })
+                    }
+                })
+            })
+        });
+    </script>
+}

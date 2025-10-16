@@ -1,0 +1,96 @@
+﻿@model Booking.Models.Hotel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<div class="proba mx-auto" style="padding: 40px; border-radius: 30px; max-width: 900px;">
+    <h2>Детали</h2>
+
+    <div>
+        <hr />
+        <dl class="row g-3">
+            <dt class="col-sm-2 text-muted">
+                @Html.DisplayNameFor(model => model.Town.Name)
+            </dt>
+
+            <dd class="col-sm-9 fw-bold">
+                @Html.DisplayFor(model => model.Town.Name)
+            </dd>
+
+            <dt class="col-sm-2 text-muted">
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+
+            <dd class="col-sm-9 fw-bold">
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+
+            <dt class="col-sm-2 text-muted">
+                @Html.DisplayNameFor(model => model.ImageURL)
+            </dt>
+
+            <dd class="col-sm-9 fw-bold">
+                <img src="@Model.ImageURL" style="width: 100px" />
+            </dd>
+
+            <dt class="col-sm-2 text-muted">
+                @Html.DisplayNameFor(model => model.Address)
+            </dt>
+
+            <dd class="col-sm-9 fw-bold">
+                @Html.DisplayFor(model => model.Address)
+            </dd>
+
+            <dt class="col-sm-2 text-muted">
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </dt>
+
+            <dd class="col-sm-9 fw-bold">
+                @Html.DisplayFor(model => model.PhoneNumber)
+            </dd>
+
+        </dl>
+    </div>
+
+    <div style="align-items: center">
+        @Html.ActionLink("Оди назад", "Index", null, null, new { @class = "btn btn-secondary" })
+        @if (User.IsInRole("Manager") || User.IsInRole("Receptionist"))
+        {
+            @Html.ActionLink("Измени", "Edit", new { id = Model.Id }, new { @class = "btn btn-warning" }) 
+        }
+    </div>
+
+    <div>
+        <h5 col-sm-2 text-muted>Соби:</h5>
+        <ul>
+            @foreach (var el in Model.Rooms)
+            {
+                var ime = el.Number.ToString();
+                <li class="card mb-3 rounded-3 shadow-sm">
+                    <div class="row g-0 align-items-center">
+                        <div class="col-md-3">
+                            <img src="@el.ImageURL"  class="img-fluid rounded-start" alt="@el.Number" />
+                        </div>
+                        <div class="col-md-9">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    Број на соба:
+                                    @Html.ActionLink(ime, "Details", "Rooms", new { id = el.Id }, new { @class = "stretched-link text-decoration-none" })
+                                </h5>
+                                <p class="card-text mb-2">
+                                    <strong>Цена по ноќ:</strong> @el.Price
+                                </p>
+                                <!--<a href="@Url.Action("Create", "Reservations", new { id = el.Id })" class="btn btn-primary btn-sm">
+        Резервирај
+    </a> -->
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            }
+        </ul>
+
+    </div>
+    
+</div>

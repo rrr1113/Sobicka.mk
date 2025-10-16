@@ -1,0 +1,62 @@
+﻿@model Booking.Models.Room
+
+@{
+    ViewBag.Title = "Details";
+}
+<div class="proba mx-auto" style="padding: 40px; border-radius: 30px; max-width: 900px">
+    <h2>Детали</h2>
+
+    <div>
+        <hr />
+        <dl class="row g-3">
+            <dt class="col-sm-2 text-muted">
+                @Html.DisplayNameFor(model => model.ImageURL)
+            </dt>
+
+            <dd class="col-sm-9 fw-bold">
+                <img src="@Model.ImageURL" style="width: 300px" />
+            </dd>
+            <dt class="col-sm-2 text-muted">
+                @Html.DisplayNameFor(model => model.Number)
+            </dt>
+            <dd class="col-sm-9 fw-bold">
+                @Html.DisplayFor(model => model.Number)
+            </dd>
+            <dt class="col-sm-2 text-muted">
+                @Html.DisplayNameFor(model => model.Price)
+            </dt>
+
+            <dd class="col-sm-9 fw-bold">
+                @Html.DisplayFor(model => model.Price)
+            </dd>
+            <dt class="col-sm-2 text-muted">
+                @Html.DisplayNameFor(model => model.Capacity)
+            </dt>
+            <dd class="col-sm-9 fw-bold">
+                @Html.DisplayFor(model => model.Capacity)
+            </dd>
+            <dt class="col-sm-2 text-muted">
+                @Html.DisplayNameFor(model => model.Hotel.Name) 
+            </dt>
+            <dd class="col-sm-9 fw-bold">
+                @Html.DisplayFor(model => model.Hotel.Name) - @Model.Hotel.Town.Name
+            </dd>
+            <dt class="col-sm-2 text-muted">
+                @Html.DisplayNameFor(model => model.Status)
+            </dt>
+            <dd class="col-sm-9 fw-bold">
+                @Html.DisplayFor(model => model.Status)
+            </dd>
+        </dl>
+    </div>
+    <div>
+        @Html.ActionLink("Резервирај", "Create", "Reservations", new { id = Model.Id }, new { @class = "btn btn-primary" })
+        @Html.ActionLink("Back to List", "Index", null, null, new { @class = "btn btn-secondary" })
+        @if (User.IsInRole("Manager") || User.IsInRole("Receptionist"))
+        {
+            @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-warning" })
+        }
+
+
+    </div>
+</div>

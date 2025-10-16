@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark" style="background-color: #3d3a31;">
+        <div class="container">
+            @Html.ActionLink("Собичка.мк", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse d-flex justify-content-between align-items-center w-100">
+                <ul class="navbar-nav mx-auto text-white d-flex">
+                    <li>@Html.ActionLink("Пребарај соби", "Index", "Home", new { area = "" }, new { @class = "nav-link text-white" })</li>
+                    <li>@Html.ActionLink("Градови", "Index", "Towns", new { area = "" }, new { @class = "nav-link text-white" })</li>
+                    <li>@Html.ActionLink("Хотели", "Index", "Hotels", new { area = "" }, new { @class = "nav-link text-white" })</li>
+                    <li>@Html.ActionLink("Соби", "Index", "Rooms", new { area = "" }, new { @class = "nav-link text-white" })</li>
+                    @if (User.IsInRole("Manager"))
+                    {
+                        <li>@Html.ActionLink("Резервации", "Index", "Reservations", new { area = "" }, new { @class = "nav-link text-white" })</li>
+                        <li>@Html.ActionLink("Улоги", "AddUserToRole", "Account", new { area = "" }, new { @class = "nav-link text-white" })</li>
+                    }
+                </ul>
+                <div>
+                    @Html.Partial("_LoginPartial")
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+
+
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        background-image: 
+            linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+            url('https://images.pexels.com/photos/31689142/pexels-photo-31689142.jpeg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-attachment: fixed;
+    }
+
+    .proba {
+        background-color: rgba(255, 255, 255, 0.95);
+    }
+
+    .navbar-brand, h2 {
+        font-family: 'Patrick Hand', cursive;
+        font-weight: bold;
+        font-size: 30px;
+    }
+
+    .navbar-nav {
+        display: flex;
+        gap: 2rem;
+    }
+
+    th, dt, navbar-nav {
+        font-family: 'Patrick Hand', cursive;
+        font-weight: bold;
+        font-size: 18px;
+    }
+</style>
+</html>
+<!--
+    /Content/Images/pozadinaa.jpg
+https://images.pexels.com/photos/6188383/pexels-photo-6188383.jpeg
+
+    https://www.kathmanduandbeyond.com/wp-content/uploads/2017/06/Skopje-Central-Post-Office-Skopje-Macedonia-7.jpg
+    #3d3a31;
+-->

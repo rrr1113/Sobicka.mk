@@ -1,0 +1,76 @@
+﻿@model Booking.Models.Town
+
+@{
+    ViewBag.Title = "Details";
+}
+<div class="proba mx-auto" style="padding: 40px; border-radius: 30px; max-width: 900px;">
+    <h2>Детали</h2>
+
+    <div>
+        <hr />
+
+        <dl class="row g-3">
+            <dt class="col-sm-2 text-muted">
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd class="col-sm-9 fw-bold">
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+
+            <dt class="col-sm-2 text-muted">
+                @Html.DisplayNameFor(model => model.Country)
+            </dt>
+            <dd class="col-sm-9 fw-bold">
+                @Html.DisplayFor(model => model.Country)
+            </dd>
+
+            <dt class="col-sm-2 text-muted">
+                @Html.DisplayNameFor(model => model.NumberOfHotels)
+            </dt>
+            <dd class="col-sm-9 fw-bold">
+                @Model.Hotels.Count
+            </dd>
+        </dl>
+
+    </div>
+    <div style="align-items: center">
+        <p>
+            @Html.ActionLink("Оди назад", "Index", null, null, new { @class = "btn btn-secondary" })
+            @if (User.IsInRole("Manager") || User.IsInRole("Receptionist"))
+            {
+                @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new {@class = "btn btn-warning" }) 
+            }
+        </p>
+    </div>
+
+    <div>
+        <h5 class="col-sm-2 text-muted">Хотели:</h5>
+        <ul>
+        @foreach (var el in Model.Hotels)
+        {
+            <li class="card mb-3 rounded-3 shadow-sm">
+                <div class="row g-0 align-items-center">
+                    <div class="col-md-3">
+                        <img src="@el.ImageURL" class="img-fluid rounded-start" alt="@el.Name" />
+                    </div>
+                    <div class="col-md-9">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                @Html.ActionLink(el.Name, "Details", "Hotels", new { id = el.Id }, new { @class = "stretched-link text-decoration-none" })
+                            </h5>
+                            <p class="card-text mb-1">
+                                <strong>Адреса:</strong> @el.Address
+                            </p>
+                            <p class="card-text">
+                                <small class="text-muted"><strong>Тел. број:</strong> @el.PhoneNumber</small>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+        }
+    </ul>
+
+    </div>
+</div>

@@ -1,0 +1,107 @@
+﻿@model IEnumerable<Booking.Models.Hotel>
+
+@{
+    ViewBag.Title = "Index";
+}
+<div class="proba" style="padding: 40px; border-radius: 30px">
+    <h2>Хотели</h2>
+
+    @if (User.IsInRole("Manager"))
+    {
+        <p>
+            @Html.ActionLink("Креирај нов хотел", "Create", null, null, new { @class = "btn btn-primary" })
+        </p>
+    }
+    <table class="table table-hover" id="tabela">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ImageURL)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Town.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Address)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PhoneNumber)
+                </th>
+                <th>
+                    Број на соби
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <img src="@item.ImageURL" style="width: 200px" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Town.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Address)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PhoneNumber)
+                    </td>
+                    <td>
+                        @item.Rooms.Count
+                    </td>
+                    <td>
+
+                        @Html.ActionLink("Детали", "Details", new { id = item.Id }, new { @class = "btn btn-outline-primary" })
+                        @if (User.IsInRole("Manager") || User.IsInRole("Receptionist"))
+                        {
+                            @Html.ActionLink("Измени", "Edit", new { id = item.Id }, new { @class = "btn btn-warning" })
+                        }
+                        @if (User.IsInRole("Manager"))
+                        {
+                            <button kopce=@item.Id class="btn btn-danger js-delete">Избриши</button>
+                        }
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+</div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var tabelata = $("#tabela").DataTable();
+            $("#tabela .js-delete").on("click", function () {
+                var kopceto = $(this);
+                bootbox.confirm("Дали сакате да го избришете овој хотел?", function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: "/Hotels/Delete/" + kopceto.attr("kopce"),
+                            method: "GET",
+                            success: function () {
+                                tabelata.row(kopceto.parents("tr")).remove().draw();
+
+                            },
+                            error: function (err) {
+                                console.log(err)
+                            }
+                        })
+                    }
+                })
+            })
+        });
+    </script>
+}

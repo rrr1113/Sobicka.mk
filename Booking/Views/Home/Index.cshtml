@@ -1,0 +1,91 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+@if (TempData["DateError"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["DateError"]
+    </div>
+}
+
+<div class="proba" style="padding: 40px; border-radius: 30px;">
+    <div style="height: 150px; display: flex; justify-content: center; align-items: start">
+        <form method="get" action="/Rooms/Search" class="p-4 rounded-3 shadow bg-white w-100" style="max-width: 1000px;">
+            <div class="row g-3 align-items-end">
+
+                <div class="col-md">
+                    <label class="form-label">Град</label>
+                    <input type="text" name="town" value="@ViewBag.Town" class="form-control" placeholder="Град">
+                </div>
+
+                <div class="col-md">
+                    <label class="form-label"> Почетен датум</label>
+                    <input type="date" value="@ViewBag.StartDate" name="startDate" class="form-control">
+                </div>
+
+                <div class="col-md">
+                    <label class="form-label"> Краен датум</label>
+                    <input type="date" value="@ViewBag.EndDate" name="endDate" class="form-control">
+                </div>
+
+                <div class="col-md">
+                    <label class="form-label"> Капацитет</label>
+                    <input type="number" value="ViewBag.Capacity" name="capacity" class="form-control" placeholder="Капацитет">
+                </div>
+
+                <div class="col-md-auto">
+                    <button type="submit" class="btn btn-success btn-lg w-100 shadow">Пребарај</button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+
+
+    <div>
+
+        @if (Model != null && Model.Count > 0)
+        {
+            <div class="container mt-5">
+                <h3>Пронајдени соби (@Model.Count):</h3>
+                <div class="row g-4">
+                    @foreach (var room in Model)
+                    {
+                        <div class="col-md-4">
+                            <div class="card shadow-sm rounded-4 h-100">
+
+                                <img src="@room.ImageURL" class="card-img-top img-fluid rounded-top" alt="Слика од соба @room.Number" style="object-fit: cover; height: 200px;" />
+
+                                <div class="card-body">
+                                    <h5 class="card-title">Соба @room.Number</h5>
+                                    <p class="card-text">
+                                        Хотел: @room.Hotel.Name <br />
+                                        Град: @room.Hotel.Town.Name <br />
+                                        Капацитет: @room.Capacity <br />
+                                        Цена по ноќ: @room.Price ден.
+                                    </p>
+                                    <a href="@Url.Action("Details", "Rooms", new { id = room.Id })" class="btn btn-primary w-100">Види детали</a>
+                                </div>
+
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+        else if (!string.IsNullOrEmpty(ViewBag.Town) || ViewBag.StartDate != null || ViewBag.EndDate != null || ViewBag.Capacity != null)
+        {
+            <div class="container mt-5">
+                <p class="text-muted">Нема соби кои одговараат на критериумите.</p>
+            </div>
+        }
+
+    </div>
+
+
+</div>
+
+
+
+
